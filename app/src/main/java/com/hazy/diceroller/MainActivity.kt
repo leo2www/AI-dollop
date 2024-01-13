@@ -100,7 +100,7 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
         )
         Text(
-            text = stringResource(R.string.tip_amount) + "$0.00",
+            text = stringResource(R.string.tip_amount, "$0.00"),
             style = MaterialTheme.typography.displaySmall
         )
 
