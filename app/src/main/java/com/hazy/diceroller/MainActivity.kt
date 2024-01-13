@@ -1,5 +1,6 @@
 package com.hazy.diceroller
 
+import android.icu.text.NumberFormat
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hazy.diceroller.ui.theme.DiceRollerTheme
@@ -41,6 +44,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
+    val tip = tipPercent / 100 * amount
+    return NumberFormat.getCurrencyInstance().format(tip)
 }
 
 // @Composable 使用Modifier 修饰Compose界面元素行为
@@ -108,11 +116,17 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
 @Composable
 fun EditNumberField(modifier: Modifier = Modifier) {
     // Compose 跟踪value更改时出发重组
-    var amountInput by remember { mutableStateOf("输入值") }
+    var amountInput by remember { mutableStateOf("") }
     TextField(
         value = amountInput, //此处显示值
         onValueChange = { amountInput = it }, // 输入文本触发lambda回调
-        modifier = modifier
+        modifier = modifier,
+        label = { Text(stringResource(id = R.string.bill_amount)) },
+        //标签，返回一个文本框。
+        singleLine = true,  //label初始一行，多行文本输入压缩称水平一行
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number
+        ),    //配置屏幕显示的键盘
     )
 }
 
@@ -125,3 +139,4 @@ fun DiceRollerApp() {
             .wrapContentSize(Alignment.Center)  // 同时再水平垂直上居中
     )
 }
+
