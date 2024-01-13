@@ -71,6 +71,12 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
         else -> R.drawable.dice_6
     }
 
+    // Compose 跟踪value更改时出发重组
+    var amountInput by remember { mutableStateOf("") }
+
+    var amount = amountInput.toDoubleOrNull() ?: 0.0
+    val tip = calculateTip(amount)
+
     Column(
         // Column 使用modifier保持传入的格式，其余的使用Modifier
         modifier = modifier
@@ -87,6 +93,8 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
                 .align(alignment = Alignment.Start) // 行内对齐
         )
         EditNumberField(
+            value = amountInput,
+            onValueChange = { amountInput = it },
             modifier = Modifier
                 .padding(bottom = 32.dp)
                 .fillMaxWidth()
@@ -112,16 +120,14 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun EditNumberField(modifier: Modifier = Modifier) {
-    // Compose 跟踪value更改时出发重组
-    var amountInput by remember { mutableStateOf("") }
-
-    var amount = amountInput.toDoubleOrNull() ?: 0.0
-    val tip = calculateTip(amount)
-
+fun EditNumberField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     TextField(
-        value = amountInput, //此处显示值
-        onValueChange = { amountInput = it }, // 输入文本触发lambda回调
+        value = value, //此处显示值
+        onValueChange = onValueChange, // 输入文本触发lambda回调
         modifier = modifier,
         label = { Text(stringResource(id = R.string.bill_amount)) },
         //标签，返回一个文本框。
