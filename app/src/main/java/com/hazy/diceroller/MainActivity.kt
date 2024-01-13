@@ -4,16 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,7 +51,7 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
 
     // 新建一个触发器mutable,
     // mutableStateOf()返回一个可观察对象，result发生变化，系统触发重组
-    var result by remember{ mutableIntStateOf(1) }
+    var result by remember { mutableIntStateOf(1) }
 
     // lambda函数，返回图片地id
     val imageResource = when (result) {
@@ -55,10 +63,31 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
         else -> R.drawable.dice_6
     }
 
-    Column (
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally  //垂直主轴对齐，居中
-    ){  // 下面是一个lambda表达式，采用尾随语法
+    Column(
+        // Column 使用modifier保持传入的格式，其余的使用Modifier
+        modifier = modifier
+            .statusBarsPadding()
+            .padding(horizontal = 40.dp)    // 行间距
+            .safeDrawingPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally,  //垂直主轴对齐，居中
+        verticalArrangement = Arrangement.Center
+    ) {  // 下面是一个lambda表达式，采用尾随语法
+        Text(
+            text = stringResource(id = R.string.calculate_tip),
+            modifier = Modifier
+                .padding(bottom = 16.dp, top = 40.dp)
+                .align(alignment = Alignment.Start) // 行内对齐
+        )
+        EditNumberField(
+            modifier = Modifier
+                .padding(bottom = 32.dp)
+                .fillMaxWidth()
+        )
+        Text(
+            text = stringResource(R.string.tip_amount, "$0.00"),
+            style = MaterialTheme.typography.displaySmall
+        )
+
         Image(
             painter = painterResource(id = imageResource), // 图片
             contentDescription = "1" // 内容说明
@@ -67,11 +96,24 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
         // 保留垂直空间，以4.dp为增量更改
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { result = (1..6).random()} ) {
+        Button(onClick = { result = (1..6).random() }) {
             Text(stringResource(R.string.roll))
             // roll字符串的if传到stringResource()函数，结果到Text可组合项
         }
+
+
     }
+}
+
+@Composable
+fun EditNumberField(modifier: Modifier = Modifier) {
+    // Compose 跟踪value更改时出发重组
+    var amountInput by remember { mutableStateOf("输入值") }
+    TextField(
+        value = amountInput, //此处显示值
+        onValueChange = { amountInput = it }, // 输入文本触发lambda回调
+        modifier = modifier
+    )
 }
 
 @Preview
