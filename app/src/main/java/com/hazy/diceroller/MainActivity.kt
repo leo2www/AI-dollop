@@ -92,7 +92,7 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
         )
         Text(
-            text = stringResource(R.string.tip_amount, "$0.00"),
+            text = stringResource(R.string.tip_amount) + "$0.00",
             style = MaterialTheme.typography.displaySmall
         )
 
@@ -108,8 +108,6 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
             Text(stringResource(R.string.roll))
             // roll字符串的if传到stringResource()函数，结果到Text可组合项
         }
-
-
     }
 }
 
@@ -117,6 +115,10 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
 fun EditNumberField(modifier: Modifier = Modifier) {
     // Compose 跟踪value更改时出发重组
     var amountInput by remember { mutableStateOf("") }
+
+    var amount = amountInput.toDoubleOrNull() ?: 0.0
+    val tip = calculateTip(amount)
+
     TextField(
         value = amountInput, //此处显示值
         onValueChange = { amountInput = it }, // 输入文本触发lambda回调
