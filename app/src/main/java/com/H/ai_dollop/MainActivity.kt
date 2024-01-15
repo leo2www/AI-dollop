@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.H.affirmations.data.Datasource
 import com.H.affirmations.model.Affirmation
 import com.H.ai_dollop.ui.theme.AIdollopTheme
 
@@ -37,15 +40,32 @@ class MainActivity : ComponentActivity() {
         Log.d(TAG, "onCreate Called")
         setContent {
             AIdollopTheme {
+                AffirmationsApp()
                 Log.d(TAG, "SSS")
             }
         }
     }
 }
-
+@Preview
 @Composable
 fun AffirmationsApp() {
+    AffirmationList(
+        affirmationList = Datasource().loadAffirmations(),
+    )
+}
 
+@Composable
+fun AffirmationList(affirmationList: List<Affirmation>, modifier: Modifier=Modifier) {
+    LazyColumn(modifier = modifier) {
+        // 注意导入不同库的items，其参量不同，
+        // 这里是 androidx.compose.foundation.lazy。
+        items(affirmationList) {affirmation ->
+            AffirmationCard(
+                affirmation = affirmation,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+    }
 }
 
 @Composable
@@ -69,7 +89,7 @@ fun AffirmationCard(affirmation: Affirmation, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
+
 @Composable
 private fun AffirmationCardPreview() {
     AffirmationCard(affirmation = Affirmation(R.string.affirmation1, R.drawable.image1))
