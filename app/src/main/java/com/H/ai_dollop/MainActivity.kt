@@ -10,6 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -189,6 +190,10 @@ fun ImageInformation(
     ) {
         DogIcon(dog.imageResourceId)
         DogInformation(dog.name, dog.age)
+        // 由于分隔符是行中唯一加权的子元素，
+        // 因此该元素会在测量其他未加权子元素的宽度之后，
+        // 填充行中的剩余空间。
+        Spacer(modifier = Modifier.weight(1f))
         AffirmationCardButton(
             expanded = expanded,
             onClick = { /*TODO*/ }
