@@ -57,7 +57,9 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AiDollopThemePreview() {
-    aiDollopTheme {
+    aiDollopTheme(
+        useDarkTheme = true
+    ) {
         AffirmationsApp()
         Log.d(TAG, "SSS")
     }
@@ -65,7 +67,6 @@ fun AiDollopThemePreview() {
 
 @Composable
 fun AffirmationsApp() {
-
     AffirmationList(
         affirmationList = Datasource().loadAffirmations(),
         dogsList = Datasource().loadDogs()

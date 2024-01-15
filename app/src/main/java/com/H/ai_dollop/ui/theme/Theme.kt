@@ -3,8 +3,8 @@ package com.H.ai_dollop.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 
@@ -76,6 +76,7 @@ private val DarkColors = darkColorScheme(
 @Composable
 fun aiDollopTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
+    dynamicColor: Boolean = false,
     content: @Composable() () -> Unit
 ) {
     val colors = if (!useDarkTheme) {
