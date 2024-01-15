@@ -94,11 +94,7 @@ fun AffirmationList(
             contentPadding = it,
             verticalArrangement = Arrangement.Top
         ) {
-//            bug的可能来源，numberOfList
-            items(
-                dogsList.size
-            ) {
-
+            items(dogsList.size) {
                 AffirmationCard(
                     affirmation = affirmationList[it],
                     dog = dogsList[it],
