@@ -15,10 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -27,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.H.affirmations.data.Datasource
 import com.H.affirmations.model.Affirmation
 import com.H.affirmations.model.Dog
-import com.H.ai_dollop.ui.theme.aiDollopTheme
+import com.H.ai_dollop.ui.theme.AiDollopTheme
 
 // 要么在文件中声明TAG，妖魔在文件顶层添加 const val
 private const val TAG = "MainActivity"
@@ -45,7 +47,7 @@ class MainActivity : ComponentActivity() {
             Surface(
                 modifier = Modifier.fillMaxSize()
             ) {
-                aiDollopTheme {
+                AiDollopTheme {
                     AffirmationsApp()
                     Log.d(TAG, "SSS")
                 }
@@ -57,7 +59,7 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AiDollopThemePreview() {
-    aiDollopTheme(
+    AiDollopTheme(
         useDarkTheme = true
     ) {
         AffirmationsApp()
@@ -81,14 +83,6 @@ fun AffirmationList(
 ) {
     val numberOfList = affirmationList.size
     LazyColumn(modifier = modifier) {
-        // 注意导入不同库的items，其参量不同，
-        // 这里是 androidx.compose.foundation.lazy。
-//        items(affirmationList) {affirmation ->
-//            AffirmationCard(
-//                affirmation = affirmation,
-//                modifier = Modifier.padding(8.dp)
-//            )
-//        }
         items(numberOfList) {
             AffirmationCard(
                 affirmation = affirmationList[it],
@@ -107,6 +101,7 @@ fun AffirmationCard(
     dog: Dog,
     modifier: Modifier = Modifier
 ) {
+//    Card 本身是中等大小组件，更改Shape.kt文件中的默认Medium即可修改Car
     Card(modifier = modifier) {
         Column(
             modifier = Modifier
@@ -171,7 +166,12 @@ fun DogIcon(
     Image(
         modifier = modifier
             .size(dimensionResource(id = R.dimen.image_size))
-            .padding(dimensionResource(id = R.dimen.padding_small)),
+            .padding(dimensionResource(id = R.dimen.padding_small))
+//        clip 属性添加到 Image 的 modifier；这会将图片裁剪为某种形状。
+            //        传入 MaterialTheme.shapes.small。
+            .clip(MaterialTheme.shapes.small),
+        // 请添加 ContentScale 和 Crop 属性，这会根据显示大小裁剪图片。
+        contentScale = ContentScale.Crop,
         painter = painterResource(id = dogIcon),
         contentDescription = null
     )

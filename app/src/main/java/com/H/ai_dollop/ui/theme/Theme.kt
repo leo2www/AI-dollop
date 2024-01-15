@@ -74,7 +74,7 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun aiDollopTheme(
+fun AiDollopTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable() () -> Unit
@@ -87,6 +87,8 @@ fun aiDollopTheme(
 
     MaterialTheme(
         colorScheme = colors,
+        typography = Typography,
+        shapes = Shapes,
         content = content
     )
 }
