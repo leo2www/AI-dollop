@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.H.affirmations.data.Datasource
 import com.H.affirmations.model.Affirmation
-import com.H.ai_dollop.ui.theme.AIdollopTheme
+import com.H.ai_dollop.ui.theme.aiDollopTheme
 
 // 要么在文件中声明TAG，妖魔在文件顶层添加 const val
 private const val TAG = "MainActivity"
@@ -39,9 +41,13 @@ class MainActivity : ComponentActivity() {
         // Log 类中的其他方法包括 Log.i()（表示信息性消息）、Log.w()（表示警告）和Log.e()（表示错误消息）。
         Log.d(TAG, "onCreate Called")
         setContent {
-            AIdollopTheme {
-                AffirmationsApp()
-                Log.d(TAG, "SSS")
+            Surface(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                aiDollopTheme {
+                    AffirmationsApp()
+                    Log.d(TAG, "SSS")
+                }
             }
         }
     }
