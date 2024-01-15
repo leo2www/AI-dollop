@@ -15,14 +15,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +46,7 @@ import com.H.ai_dollop.ui.theme.AiDollopTheme
 
 // 要么在文件中声明TAG，妖魔在文件顶层添加 const val
 private const val TAG = "MainActivity"
+
 
 class MainActivity : ComponentActivity() {
 
@@ -85,6 +94,9 @@ fun AffirmationList(
     dogsList: List<Dog>,
     modifier: Modifier = Modifier
 ) {
+    var expanded: Boolean by remember {
+        mutableStateOf(false)
+    }
     Scaffold(
         topBar = {
             WoofTopAppBar()
@@ -98,8 +110,9 @@ fun AffirmationList(
                 AffirmationCard(
                     affirmation = affirmationList[it],
                     dog = dogsList[it],
+                    expanded = expanded,
                     modifier = Modifier
-                        .padding(dimensionResource(id = R.dimen.padding_small))
+                        .padding(dimensionResource(id = R.dimen.padding_small)),
                 )
             }
         }
@@ -133,11 +146,13 @@ fun WoofTopAppBar(
         })
 }
 
+
 @Composable
 fun AffirmationCard(
     affirmation: Affirmation,
     dog: Dog,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    expanded: Boolean
 ) {
 //    Card 本身是中等大小组件，更改Shape.kt文件中的默认Medium即可修改Car
     Card(modifier = modifier) {
@@ -154,6 +169,7 @@ fun AffirmationCard(
             )
             ImageInformation(
                 dog = dog,
+                expanded = expanded,
             )
 
         }
@@ -163,7 +179,8 @@ fun AffirmationCard(
 @Composable
 fun ImageInformation(
     dog: Dog,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    expanded: Boolean
 ) {
     Row(
         modifier = modifier
@@ -172,7 +189,35 @@ fun ImageInformation(
     ) {
         DogIcon(dog.imageResourceId)
         DogInformation(dog.name, dog.age)
+        AffirmationCardButton(
+            expanded = expanded,
+            onClick = { /*TODO*/ }
+        )
 
+    }
+}
+
+@Composable
+private fun AffirmationCardButton(
+    expanded: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+//    展开图标
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = Icons.Filled.ExpandMore,
+            contentDescription = stringResource(
+//                包提供的描述
+                id = R.string.expand_button_content_description
+            ),
+//            图标颜色
+            tint = MaterialTheme.colorScheme.secondary
+        )
     }
 }
 
